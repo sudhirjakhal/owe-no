@@ -1,0 +1,33 @@
+{% include 'base.html' %}
+
+{% block content %}
+    <header>
+        <div class="header-container">
+            <h1>Owe No!</h1>
+            <button class="new-group-btn">Create group</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="total-owe">
+            <p>
+                Total dene hai :  Rs.<span>3995</span>
+            </p>
+            <button class="group-filter-btn"><i class="bi bi-filter"></i></button>
+        </section>
+
+        <section class="group-list">
+                <li>
+                    <p>Group Name</p>
+                </li>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <button class="groups-btn">Groups</button>
+            <button class="friends-btn">Friends</button>
+            <button class="accounts-btn">Accounts</button>
+        </div>
+    </footer>
+{% endblock content %}
