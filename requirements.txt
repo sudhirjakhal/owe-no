@@ -2,7 +2,6 @@ alembic
 setuptools_rust
 click
 bcrypt==4.0.1
-click==8.1.7
 email_validator==2.2.0
 fastapi==0.115.5
 Jinja2==3.1.4
