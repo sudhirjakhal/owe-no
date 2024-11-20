@@ -1,24 +1,22 @@
-#Use an Ubuntu 18.04 base for our staging server
+# Use Ubuntu 18.04 as the base for the server
 FROM vm/ubuntu:18.04
 
-# To note: Layerfiles create entire VMs, *not* containers!
+# Install Python and pip
+RUN apt-get update && apt-get install -y python3 python3-pip
 
-# Install python
-RUN apt-get update && apt-get install python3
+# Install required system dependencies
+RUN apt-get install -y build-essential libssl-dev libffi-dev python3-dev
 
-# Create some files
-RUN echo '<b>some html</b>' > hello.html
-RUN echo '<b>another file</b>' > another.html
+# Set the working directory in the VM
+WORKDIR /app
 
-# You could also install & start a database:
-# RUN apt-get update && apt-get install postgresql
-
-# This line copies the repository to /root in the runner
+# Copy the FastAPI application to the working directory
 COPY . .
-RUN ls
 
-# Expose the webserver in the staging server as a secure link.
-# Whenever someone clicks the link, we'll load this staging server and forward
-# their requests to it.
-RUN BACKGROUND python3 -m http.server 80
-EXPOSE WEBSITE http://localhost:80
+# Install Python dependencies
+RUN pip3 install -r requirements.txt
+
+# Expose the webserver in the staging server
+# This will run your FastAPI application
+RUN BACKGROUND uvicorn main:app --host 0.0.0.0 --port 8000
+EXPOSE WEBSITE http://localhost:8000
