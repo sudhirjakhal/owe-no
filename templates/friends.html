@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header_button %}
+    <a class="new-btn"id="new-btn" href="/search-friend">Search friend</a>
+{% endblock header_button %}
+
+{% block content %}
+<main>
+    <section class="title">
+        <p>
+            Your Friends
+        </p>
+        <button class="filter-btn"><i class="bi bi-filter"></i></button>
+    </section>
+
+    <section class="group-list">
+        {% if friend_list %}
+        {% for item in friend_list %}
+        <li>
+            <p class="flex-grow-1">{{ item.first_name }} {{ item.last_name }}</p>
+        </li>
+        {% endfor %}
+        {% else %}
+        <p class="w-100 text-center">No friends avaiable</p>
+        {% endif %}
+    </section>
+
+
+</main>
+{% endblock content %}

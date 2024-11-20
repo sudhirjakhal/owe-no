@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <form id="newGroupForm" class="p-2" method="POST" action="/add-group">
+        <div class="mb-3">
+            <label for="groupName" class="form-label">Group Name</label>
+            <input type="text" name="group_name" class="form-control" id="groupName" placeholder="Enter group name"
+                required />
+        </div>
+        <button type="submit" class="btn btn-primary">Create Group</button>
+    </form>
+
+</main>
+{% endblock content %}

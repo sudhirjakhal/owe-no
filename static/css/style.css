@@ -33,7 +33,7 @@ h1 {
     font-weight: bold;
 }
 
-header button {
+#new-btn {
     background-color: transparent;
     color: white;
     border: none;
@@ -41,9 +41,10 @@ header button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none;
 }
 
-header button:hover {
+#new-btn:hover {
     background-color: #45A049;
 }
 
@@ -73,13 +74,32 @@ main {
 
 }
 
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.title p {
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: baseline;
+
+}
+
 .total-owe span {
     font-size: 20px;
     color: red;
     margin-left: 5px;
 }
 
-.group-filter-btn {
+.filter-btn {
     background-color: transparent;
     color: #4CAF50;
     border: none;
@@ -89,7 +109,7 @@ main {
     font-size: 16px;
 }
 
-.group-filter-btn:hover {
+.filter-btn:hover {
     background-color: #45A049;
     color: white;
 }
@@ -106,6 +126,9 @@ main {
 
 .group-list li {
     list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     background-color: #f7f7f7;
     margin-bottom: 10px;
@@ -135,7 +158,7 @@ footer {
     justify-content: space-around;
 }
 
-.footer-container button {
+.footer-container a {
     flex: 1;
     margin: 0 5px;
     text-align: center;
@@ -146,17 +169,41 @@ footer {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none;
 }
 
-.footer-container button:first-child {
+.footer-container a:first-child {
     margin-left: 0;
 }
 
-.footer-container button:last-child {
+.footer-container a:last-child {
     margin-right: 0;
 }
 
-.footer-container button:hover {
+.footer-container a:hover {
     background-color: #45A049;
     color: white;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50; /* Primary color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 30px;
+    text-decoration: none;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.floating-btn:hover {
+    background-color: #45A049; /* Darker shade on hover */
 }

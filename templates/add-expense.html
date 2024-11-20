@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <form id="newExpenseForm" class="p-2" method="POST" action="/add-expense/{{ group_id }}">
+        <div class="mb-3">
+            <label for="expenseDescription" class="form-label">Expense Description</label>
+            <input type="text" name="expense_description" class="form-control" id="expenseDescription"
+                placeholder="Enter description" required />
+        </div>
+        <div class="mb-3">
+            <label for="expenseAmount" class="form-label">Amount</label>
+            <input type="number" name="expense_amount" class="form-control" id="expenseAmount" required />
+        </div>
+        <div class="mb-3">
+            <label for="expensePaidBy" class="form-label">Paid By</label>
+            <select name="expense_paid_by" id="expensePaidBy">
+                {% for member in group_members %}
+                <option value="{{ member.user_id }}" {% if member.user_id==current_user.user_id %} selected {% endif
+                    %}>
+                    {{ member.first_name }} {{ member.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="expenseSplitAmoung" class="form-label">Split Amoung</label>
+            <select name="expense_split_amoung[]" id="expenseSplitAmoung" multiple>
+                {% for member in group_members %}
+                <option value="{{ member.user_id }}">
+                    {{ member.first_name }} {{ member.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="expenseSplitType" class="form-label">Split By</label>
+            <select name="split_type" id="expenseSplitType">
+                <option value="equal" selected>Equal</option>
+                <option value="ratio">Ratio</option>
+                <option value="exact">Exact</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="expenseDate" class="form-label">Expense Date</label>
+            <input type="datetime-local" name="expense_date" class="form-control" id="expenseDate" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</main>
+{% endblock content %}

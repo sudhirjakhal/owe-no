@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <section class="title">
+        <form action="/search-friend" method="post" class="d-flex align-items-center w-100">
+            <input type="text" name="search_friend" id="search_friend" class="flex-grow-1" placeholder="Search" />
+            <button type="submit" class="filter-btn"><i class="bi bi-search"></i></button>
+        </form>
+    </section>
+
+    <section class="group-list">
+        {% if data_list %}
+        {% for item in data_list %}
+        <li>
+            <p>{{ item.first_name }} {{ item.last_name }}</p>
+            <div>
+                <form action="/send-friend-request/{{ item.id }}" method="POST">
+                <a class="group-list-{{ item.user_id}} choice-btn" id="add-friend-btn" href="javascript:void(0);" onclick="this.closest('form').submit();"><i class="bi bi-person-fill-add"></i></a>
+            </form>
+            </div>
+        </li>
+        {% endfor %}
+        {% endif %}
+    </section>
+
+
+</main>
+{% endblock content %}

@@ -1,33 +1,46 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
+
+<!-- New Group Modal -->
+
+
+{% block header_button %}
+<a class="new-btn" id="new-btn" href="/add-group">Create group</a>
+{% endblock header_button %}
 
 {% block content %}
-    <header>
-        <div class="header-container">
-            <h1>Owe No!</h1>
-            <button class="new-group-btn">Create group</button>
-        </div>
-    </header>
 
-    <main>
-        <section class="total-owe">
-            <p>
-                Total dene hai :  Rs.<span>3995</span>
+<main>
+    <section class="title">
+        <div class="d-flex flex-column w-100 pe-3">
+            <p class="d-flex justify-content-between w-100">
+                <span class="w-100">Total expense:</span>
+                <span></span>
             </p>
-            <button class="group-filter-btn"><i class="bi bi-filter"></i></button>
-        </section>
-
-        <section class="group-list">
-                <li>
-                    <p>Group Name</p>
-                </li>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-container">
-            <button class="groups-btn">Groups</button>
-            <button class="friends-btn">Friends</button>
-            <button class="accounts-btn">Accounts</button>
+            <div class="w-100 d-flex justify-content-between">
+                <span class="flex-grow-1">Total lene hai: <span id="total_lene_hai" style="color: green;"></span></span>
+                <span class="flex-grow-1 text-end">Total dene hai: <span id="total_dene_hai" style="color: red;"></span></span>
+            </div>
         </div>
-    </footer>
+        <button class="filter-btn"><i class="bi bi-filter"></i></button>
+    </section>
+
+    <section class="group-list">
+        {% if group_list %}
+        {% for group_item in group_list %}
+        <li>
+                <a class="group-list-{{ group_item.id }} text-decoration-none text-black flex-grow-1" href="/view-group/{{ group_item.id }}">{{ group_item.name }}</a>
+                <a href="/leave-group/{{ group_item.id }}" class="text-decoration-none text-black" onclick="return confirm('This action will make you leave the group');"><i class="bi bi-x-lg"></i></a>
+        </li>
+        {% endfor %}
+        {% else %}
+        <p class="w-100 text-center">No group avaiable</p>
+        {% endif %}
+    </section>
+</main>
 {% endblock content %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock js %}

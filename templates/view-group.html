@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block header_button %}
+<a class="new-btn" id="new-btn" href="/add-member/{{ group_id }}">Add member</a>
+{% endblock header_button %}
+
+{% block content %}
+<main>
+    <section class="title">
+        <div class="d-flex flex-column w-100 pe-3">
+            <p class="flex-grow-1">
+                <span class="w-100">Transactions</span>
+            </p>
+            <div class="w-100 d-flex justify-content-between">
+                <span class="flex-grow-1">Total lene hai: <span id="total_lene_hai" style="color: green;"></span></span>
+                <span class="flex-grow-1 text-end">Total dene hai: <span id="total_dene_hai" style="color: red;"></span></span>
+            </div>
+        </div>
+        <button class="filter-btn"><i class="bi bi-filter"></i></button>
+    </section>
+
+    <section class="group-list">
+        {% if data_list %}
+        {% for month, transactions in data_list.items() %}
+            <span class="month">{{ month }}</span>
+            {% for item in transactions %}
+            <li>
+                <a class="group-list-{{ item.expense_id }} d-flex w-100 text-decoration-none text-black" href="/delete-expense/{{ item.group_id }}/{{ item.expense_id }}" onclick="return confirm('This action will delete the expense.');">
+                    <div class="d-flex flex-column align-self-center">
+                        <span class="expense-day h-100 mx-2">{{ item.transaction_date }}</span>
+                    </div>
+                    <div class="flex-grow-1 ps-2 d-flex flex-column">
+                        <span class="expense-description">{{ item.description }}</span>
+                        <span class="expense-amount-paid-by text-secondary" style="font-size: 12px;">{{ item.amount_paid_by }}</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+                        <span class="transaction-type text-secondary" style="font-size: 12px;">{{ item.transaction_type }}</span>
+                        <span class="expense-share">{{ item.share }}</span>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        {% endfor %}
+        {% else %}
+        <p class="w-100 text-center">No transactions available</p>
+        {% endif %}
+    </section>
+
+    <a href="/add-expense/{{ group_id }}" class="floating-btn">
+        <i class="bi bi-plus-lg"></i>
+    </a>
+
+</main>
+{% endblock content %}
+
+{% block js %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let totalLeneHai = 0; // Total amount to receive
+        let totalDeneHai = 0; // Total amount to give
+
+        // Loop through each transaction and sum the amounts based on transaction type
+        document.querySelectorAll("li").forEach((item) => {
+            const transactionType = item.querySelector(".transaction-type").textContent.trim();
+            const shareText = item.querySelector(".expense-share").textContent.trim();
+            const share = parseFloat(shareText.replace("₹", "").trim());
+
+            if (!isNaN(share)) {
+                if (transactionType === "tumne lene hai") {
+                    totalLeneHai += share;
+                } else if (transactionType === "tumne dene hai") {
+                    totalDeneHai += share;
+                }
+            }
+        });
+
+        // Update the UI with the calculated totals
+        document.getElementById("total_lene_hai").textContent = `₹ ${totalLeneHai.toFixed(2)}`;
+        document.getElementById("total_dene_hai").textContent = `₹ ${totalDeneHai.toFixed(2)}`;
+    });
+</script>
+
+{% endblock js %}

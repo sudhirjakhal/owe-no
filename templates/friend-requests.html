@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header_button %}
+    <a class="new-btn"id="new-btn" href="/search-friend">Search friend</a>
+{% endblock header_button %}
+
+{% block content %}
+<main>
+    <section class="title">
+        <p>
+            Your Friend Requests
+        </p>
+        <button class="filter-btn"><i class="bi bi-filter"></i></button>
+    </section>
+
+    <section class="group-list">
+        {% if friend_list %}
+        {% for item in friend_list %}
+        <li>
+            <p class="flex-grow-1">{{ item.first_name }} {{ item.last_name }}</p>
+            <div class="d-flex align-items-center">
+                <form action="/accept-friend-request/{{ item.friend_request_id }}" method="POST" class="me-2">
+                    <a class="group-list-{{ item.friend_request_id }} choice-btn" id="accept-btn" href="javascript:void(0);" onclick="this.closest('form').submit();" ><i class="bi bi-check-lg"></i></a>
+                </form>
+               <form action="/reject-friend-request/{{ item.friend_request_id }}" method="POST">
+                <a class="group-list-{{ item.friend_request_id }} choice-btn" id="reject-btn" href="javascript:void(0);" onclick="this.closest('form').submit();"><i class="bi bi-x-lg"></i></a>
+               </form>
+            </div>
+        </li>
+        {% endfor %}
+        {% else %}
+        <p class="w-100 text-center">No friends avaiable</p>
+        {% endif %}
+    </section>
+
+
+</main>
+{% endblock content %}
