@@ -23,4 +23,4 @@ RUN pip3 install -r requirements.txt
 # Expose the webserver in the staging server
 # This will run your FastAPI application
 RUN BACKGROUND python3 -m uvicorn app:app --host 0.0.0.0 --port 8000
-EXPOSE WEBSITE http://localhost:8000
+EXPOSE WEBSITE http://localhost:8000/login
