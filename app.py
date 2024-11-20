@@ -4,7 +4,7 @@ from starlette.templating import Jinja2Templates
 from starlette.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, not_, and_, select, asc, desc
-from auth import authenticate_user, get_current_user, get_hashed_password
+from auth import authenticate_user, get_current_user, get_hashed_password, AuthenticationException
 from services import createDatabase, get_db
 from models import User, Group, GroupMember, Expense, ExpenseSplit, Settlement, Friends, FriendRequests
 from auth import get_user
@@ -22,6 +22,11 @@ app = FastAPI()
 createDatabase()
 
 app.mount("/static", StaticFiles(directory=f"{dir_path}/static"), name="static")
+
+@app.exception_handler(AuthenticationException)
+async def authentication_exception_handler(request: Request, exc: AuthenticationException):
+    return RedirectResponse(url="/login")  # Redirect to the login page if the user is not authenticated
+
 
 @app.get("/login")
 async def get_login(request: Request):

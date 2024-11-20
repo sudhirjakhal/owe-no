@@ -4,6 +4,10 @@ from passlib.context import CryptContext
 from models import User
 from services import get_db
 
+class AuthenticationException(Exception):
+    pass
+
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_passsword(plain_password, hashed_password):
@@ -51,10 +55,7 @@ def authenticate_user(email: str, password: str):
 
 async def get_current_user(email: str = Cookie(default=None)):
     if email is None:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="No email found in Cookies"
-        )
+        raise AuthenticationException
     
     user = get_user(email)
     if user is None:
