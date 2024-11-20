@@ -1,5 +1,6 @@
 alembic
 setuptools_rust
+click==8.1.7
 bcrypt==4.0.1
 click==8.1.7
 email_validator==2.2.0
