@@ -7,7 +7,7 @@
             <label for="expensePaidBy" class="form-label">Friends</label>
             <select name="members" id="members" multiple>
                 {% for friend in friends %}
-                <option value="{{ friend.friend_id }}">
+                <option value="{{ friend.user_id }}">
                     {{ friend.first_name }} {{ friend.last_name }}</option>
                 {% endfor %}
             </select>

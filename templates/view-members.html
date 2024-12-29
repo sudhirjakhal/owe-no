@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+<!-- New Group Modal -->
+{% block header_button %}
+<a class="new-btn" id="new-btn" href="/add-member/{group_id}">Add member</a>
+{% endblock header_button %}
+
+{% block content %}
+<main>
+    <section class="title">
+        <p>
+            Group Members
+        </p>
+        <button class="filter-btn"><i class="bi bi-filter"></i></button>
+    </section>
+    <section class="group-list">
+        {% if members %}
+        {% for group_item in members %}
+        <li>
+            <a class="group-list-{{ group_item.user_id }} text-decoration-none text-black flex-grow-1">{{ group_item.first_name }} {{ group_item.last_name }}</a>
+            <div class="options d-flex">
+                <a href="/remove-member/{{ group_id }}/{{ group_item.user_id }}" class="text-decoration-none text-black" onclick="return confirm('This action will make you leave the group');"><i class="bi bi-x-lg"></i></a>
+            </div>
+        </li>
+        {% endfor %}
+        {% else %}
+        <p class="w-100 text-center">No members available</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock content %}
+
+{% block js %}
+<script>
+</script>
+{% endblock js %}

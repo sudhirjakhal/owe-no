@@ -16,14 +16,13 @@
             <label for="expensePaidBy" class="form-label">Paid By</label>
             <select name="expense_paid_by" id="expensePaidBy">
                 {% for member in group_members %}
-                <option value="{{ member.user_id }}" {% if member.user_id==current_user.user_id %} selected {% endif
-                    %}>
+                <option value="{{ member.user_id }}" {% if member.user_id == current_user.user_id %} selected {% endif %}>
                     {{ member.first_name }} {{ member.last_name }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="mb-3">
-            <label for="expenseSplitAmoung" class="form-label">Split Amoung</label>
+            <label for="expenseSplitAmoung" class="form-label">Split Among</label>
             <select name="expense_split_amoung[]" id="expenseSplitAmoung" multiple>
                 {% for member in group_members %}
                 <option value="{{ member.user_id }}">
@@ -39,12 +38,126 @@
                 <option value="exact">Exact</option>
             </select>
         </div>
+        <!-- Ratio Input Container (Hidden by default) -->
+        <div id="ratioInputsContainer" class="mb-3" style="display: none;">
+            <label for="expenseRatios" class="form-label">Enter Ratios for Selected Members</label>
+            <div id="expenseRatios"></div>
+        </div>
+        <!-- Exact Amount Input Container (Hidden by default) -->
+        <div id="exactInputsContainer" class="mb-3" style="display: none;">
+            <label for="expenseExactShares" class="form-label">Enter Exact Amounts for Selected Members</label>
+            <div id="expenseExactShares"></div>
+        </div>
         <div class="mb-3">
             <label for="expenseDate" class="form-label">Expense Date</label>
             <input type="datetime-local" name="expense_date" class="form-control" id="expenseDate" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
 </main>
+
+<script>
+    // Handle the change event for the split type
+    document.getElementById('expenseSplitType').addEventListener('change', function() {
+        const splitType = this.value;
+        const ratioContainer = document.getElementById('ratioInputsContainer');
+        const ratioInputs = document.getElementById('expenseRatios');
+        const exactContainer = document.getElementById('exactInputsContainer');
+        const exactInputs = document.getElementById('expenseExactShares');
+
+        // Clear existing inputs
+        ratioInputs.innerHTML = '';
+        exactInputs.innerHTML = '';
+
+        // Handle ratio inputs
+        if (splitType === 'ratio') {
+            ratioContainer.style.display = 'block'; // Show ratio input container
+            exactContainer.style.display = 'none';  // Hide exact input container
+
+            const selectedMembers = document.getElementById('expenseSplitAmoung').selectedOptions;
+
+            // For each selected member, generate an input for their ratio
+            Array.from(selectedMembers).forEach(function(option) {
+                const memberId = option.value;
+                const memberName = option.text;
+
+                // Create a new div for this member's ratio input
+                const ratioDiv = document.createElement('div');
+                ratioDiv.classList.add('mb-2');
+                ratioDiv.innerHTML = `
+                    <label for="ratio_${memberId}" class="form-label">${memberName}</label>
+                    <input type="number" name="expense_ratios[]" class="form-control" 
+                           id="ratio_${memberId}" placeholder="Enter ratio" required min="1" max="100" />
+                `;
+                ratioInputs.appendChild(ratioDiv);
+            });
+        }
+        // Handle exact inputs
+        else if (splitType === 'exact') {
+            ratioContainer.style.display = 'none';  // Hide ratio input container
+            exactContainer.style.display = 'block'; // Show exact input container
+
+            const selectedMembers = document.getElementById('expenseSplitAmoung').selectedOptions;
+
+            // For each selected member, generate an input for their exact amount
+            Array.from(selectedMembers).forEach(function(option) {
+                const memberId = option.value;
+                const memberName = option.text;
+
+                // Create a new div for this member's exact amount input
+                const exactDiv = document.createElement('div');
+                exactDiv.classList.add('mb-2');
+                exactDiv.innerHTML = `
+                    <label for="exact_${memberId}" class="form-label">${memberName}</label>
+                    <input type="number" name="expense_exact_shares[]" class="form-control" 
+                           id="exact_${memberId}" placeholder="Enter exact amount" required min="0" />
+                `;
+                exactInputs.appendChild(exactDiv);
+            });
+        } else {
+            ratioContainer.style.display = 'none';  // Hide ratio input container
+            exactContainer.style.display = 'none';  // Hide exact input container
+        }
+    });
+
+    // Trigger change event on page load to handle initial state
+    document.getElementById('expenseSplitType').dispatchEvent(new Event('change'));
+
+    // Form submission handler to validate ratios or exact shares
+    document.getElementById('newExpenseForm').addEventListener('submit', function(event) {
+        const splitType = document.getElementById('expenseSplitType').value;
+        const expenseAmount = parseFloat(document.getElementById('expenseAmount').value);
+        let isValid = true;
+
+        if (splitType === 'ratio') {
+            const ratios = Array.from(document.getElementsByName('expense_ratios[]'));
+            let totalRatios = 0;
+            ratios.forEach(function(ratioInput) {
+                totalRatios += parseInt(ratioInput.value) || 0;
+            });
+
+            if (totalRatios !== 100) {
+                alert("The sum of the ratios must be 100. Current sum: " + totalRatios);
+                isValid = false;
+            }
+        }
+
+        if (splitType === 'exact') {
+            const exactShares = Array.from(document.getElementsByName('expense_exact_shares[]'));
+            let totalExactShares = 0;
+            exactShares.forEach(function(exactInput) {
+                totalExactShares += parseFloat(exactInput.value) || 0;
+            });
+
+            if (totalExactShares !== expenseAmount) {
+                alert("The sum of the exact amounts must equal the total expense amount. Current sum: " + totalExactShares);
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
 {% endblock content %}

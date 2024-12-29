@@ -88,5 +88,6 @@ class Settlement(Base):
     settlement_id = Column(Integer, primary_key=True, autoincrement=True)
     payer_id = Column(Integer, ForeignKey("tbl_user.id"))
     payee_id = Column(Integer, ForeignKey("tbl_user.id"))
+    group_id = Column(Integer, ForeignKey("tbl_group.id"))
     amount = Column(DECIMAL(10, 2))
     settled_at = Column(DateTime, default=func.now())

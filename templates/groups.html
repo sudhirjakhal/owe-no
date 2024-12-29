@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 
 <!-- New Group Modal -->
-
-
 {% block header_button %}
 <a class="new-btn" id="new-btn" href="/add-group">Create group</a>
 {% endblock header_button %}
 
 {% block content %}
-
 <main>
     <section class="title">
         <div class="d-flex flex-column w-100 pe-3">
@@ -17,23 +14,33 @@
                 <span></span>
             </p>
             <div class="w-100 d-flex justify-content-between">
-                <span class="flex-grow-1">Total lene hai: <span id="total_lene_hai" style="color: green;"></span></span>
-                <span class="flex-grow-1 text-end">Total dene hai: <span id="total_dene_hai" style="color: red;"></span></span>
+                <span class="flex-grow-1">Total receive: <span id="total_lene_hai" style="color: green;"></span></span>
+                <span class="flex-grow-1 text-end">Total pay: <span id="total_dene_hai" style="color: red;"></span></span>
             </div>
         </div>
         <button class="filter-btn"><i class="bi bi-filter"></i></button>
     </section>
-
     <section class="group-list">
         {% if group_list %}
         {% for group_item in group_list %}
         <li>
-                <a class="group-list-{{ group_item.id }} text-decoration-none text-black flex-grow-1" href="/view-group/{{ group_item.id }}">{{ group_item.name }}</a>
+            <a class="group-list-{{ group_item.id }} text-decoration-none text-black flex-grow-1" href="/view-group/{{ group_item.id }}">{{ group_item.name }}</a>
+            <div class="options d-flex">
+                <!-- Dropdown for each group -->
+                <div class="dropdown me-2">
+                    <button class="bg-transparent border border-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li class="p-0 m-0 border border-0 bg-transparent shadow-none"><a class="dropdown-item" href="/view-report/{{ group_item.id }}">View Report</a></li>
+                    </ul>
+                </div>
                 <a href="/leave-group/{{ group_item.id }}" class="text-decoration-none text-black" onclick="return confirm('This action will make you leave the group');"><i class="bi bi-x-lg"></i></a>
+            </div>
         </li>
         {% endfor %}
         {% else %}
-        <p class="w-100 text-center">No group avaiable</p>
+        <p class="w-100 text-center">No group available</p>
         {% endif %}
     </section>
 </main>
@@ -41,6 +48,5 @@
 
 {% block js %}
 <script>
-
 </script>
 {% endblock js %}

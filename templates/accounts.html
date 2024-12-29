@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block header %}
+<header>
+    <div class="header-container">
+        <h1>Your Account</h1>
+    </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+<main>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Account Details</h2>
+    
+        <div class="row">
+            <!-- User Details Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Information</h5>
+                        <p><strong>Name: </strong>{{ user.first_name }} {{ user.last_name }}</p>
+                        <p><strong>Email: </strong>{{ user.email }}</p>
+                        <p><strong>Phone: </strong>{{ user.phone_number }}</p>
+                    </div>
+                </div>
+            </div>
+
+            
+    
+            <!-- Password Change Section (Collapsible) -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Change Password</h5>
+    
+                        <!-- Button to trigger dropdown -->
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#passwordForm" aria-expanded="false" aria-controls="passwordForm">
+                            Change Password
+                        </button>
+    
+                        <!-- Collapsible form -->
+                        <div class="collapse mt-3" id="passwordForm">
+                            <form method="post" action="/update-password">
+                                <div class="mb-3">
+                                    <label for="current_password" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="current_password" name="current_password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="new_password" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="new_password" name="new_password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Logout Section -->
+        <div class="row mt-4">
+            <div class="col text-center">
+                <form method="post" action="/logout">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

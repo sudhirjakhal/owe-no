@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block header_button %}
-<a class="new-btn" id="new-btn" href="/add-member/{{ group_id }}">Add member</a>
+<div class="group-btn">
+    <a class="new-btn" id="new-btn" href="/add-member/{{ group_id }}">Add member</a>
+    <a class="new-btn" id="new-btn" href="/view-members/{{ group_id }}">View members</a>
+</div>
 {% endblock header_button %}
 
 {% block content %}
@@ -12,8 +15,8 @@
                 <span class="w-100">Transactions</span>
             </p>
             <div class="w-100 d-flex justify-content-between">
-                <span class="flex-grow-1">Total lene hai: <span id="total_lene_hai" style="color: green;"></span></span>
-                <span class="flex-grow-1 text-end">Total dene hai: <span id="total_dene_hai" style="color: red;"></span></span>
+                <span class="flex-grow-1">Total receive: <span id="total_lene_hai" style="color: green;"></span></span>
+                <span class="flex-grow-1 text-end">Total pay: <span id="total_dene_hai" style="color: red;"></span></span>
             </div>
         </div>
         <button class="filter-btn"><i class="bi bi-filter"></i></button>
@@ -66,9 +69,9 @@
             const share = parseFloat(shareText.replace("₹", "").trim());
 
             if (!isNaN(share)) {
-                if (transactionType === "tumne lene hai") {
+                if (transactionType === "Receive") {
                     totalLeneHai += share;
-                } else if (transactionType === "tumne dene hai") {
+                } else if (transactionType === "Pay") {
                     totalDeneHai += share;
                 }
             }

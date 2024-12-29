@@ -7,6 +7,9 @@ from services import get_db
 class AuthenticationException(Exception):
     pass
 
+class UserNotFoundException(Exception):
+    pass
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -59,9 +62,6 @@ async def get_current_user(email: str = Cookie(default=None)):
     
     user = get_user(email)
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Not Authenticated."
-        )
+        raise UserNotFoundException
     
     return user
